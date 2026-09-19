@@ -1,0 +1,1474 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>宜春学院算法队 · 程序设计竞赛集训队</title>
+<meta name="description" content="宜春学院算法队（程序设计竞赛集训队）官方网站：训练体系、训练方向、竞赛安排与加入方式。" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/space-grotesk@5.2.10/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/manrope@5.2.8/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-sans-sc@5.2.10/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@5.2.8/index.css" rel="stylesheet">
+<style>
+  /* ─── tokens ─────────────────────────────────────────────────────── */
+  :root {
+    --bg:      #0d1014;
+    --surface: #151a20;
+    --fg:      #e8ecf1;
+    --muted:   #93a0ae;
+    --border:  #242c37;
+    --accent:  #34d17f;
+
+    /* 难度语义色（仅用于题单难度标签） */
+    --c-easy:   #34d17f;
+    --c-mid:    #57a8ef;
+    --c-hard:   #e0a13a;
+    --c-expert: #dd6d89;
+
+    --accent-soft: color-mix(in oklch, var(--accent) 16%, transparent);
+    --fg-soft:     color-mix(in oklch, var(--fg) 7%, transparent);
+
+    --font-display: 'Space Grotesk Variable', 'Noto Sans SC Variable', 'PingFang SC', system-ui, sans-serif;
+    --font-body:    'Manrope Variable', 'Noto Sans SC Variable', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    --fs-h1: clamp(38px, 5.4vw, 64px);
+    --fs-h2: clamp(28px, 3.4vw, 42px);
+    --fs-h3: 20px;
+    --fs-lead: 18px;
+    --fs-body: 16px;
+    --fs-meta: 13px;
+
+    --gap-xs: 8px;
+    --gap-sm: 12px;
+    --gap-md: 20px;
+    --gap-lg: 32px;
+    --gap-xl: 56px;
+    --gap-2xl: 96px;
+    --container: 1140px;
+    --gutter: 28px;
+
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: 1.62;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+    overflow-wrap: break-word;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; }
+  p { text-wrap: pretty; }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  [hidden] { display: none !important; }
+
+  .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: clamp(52px, 7vw, var(--gap-2xl)); }
+  .section + .section { border-top: 1px solid var(--border); }
+  .stack { display: flex; flex-direction: column; }
+  .stack > * + * { margin-top: var(--gap-md); }
+  .row { display: flex; align-items: center; gap: var(--gap-md); }
+  .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+  @media (max-width: 920px) {
+    .grid-2, .grid-3, .grid-2-1 { grid-template-columns: 1fr; }
+  }
+
+  .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); line-height: 1.06; letter-spacing: -0.02em; margin: 0; font-weight: 600; }
+  .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); line-height: 1.12; letter-spacing: -0.015em; margin: 0; font-weight: 600; }
+  .h3, h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.35; margin: 0; }
+  .lead { font-size: var(--fs-lead); line-height: 1.6; color: var(--muted); max-width: 58ch; margin: 0; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--gap-md);
+  }
+  .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+  .num  { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+  /* ─── nav ────────────────────────────────────────────────────────── */
+  .topnav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in oklch, var(--bg) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav-inner { display: flex; align-items: center; justify-content: space-between; padding-block: 13px; gap: var(--gap-md); }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: grid; place-items: center;
+    background: var(--accent-soft); color: var(--accent);
+    border: 1px solid color-mix(in oklch, var(--accent) 34%, transparent);
+    flex: none;
+  }
+  .brand-mark svg { width: 19px; height: 19px; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-text b { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .brand-text span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+  .topnav nav { display: flex; gap: var(--gap-lg); }
+  .topnav nav a {
+    font-size: 14px; color: var(--muted); padding-block: 4px;
+    border-bottom: 1px solid transparent; transition: color .15s ease, border-color .15s ease;
+  }
+  .topnav nav a:hover, .topnav nav a.is-current { color: var(--fg); border-bottom-color: var(--accent); }
+  @media (max-width: 820px) { .topnav nav { display: none; } }
+
+  /* ─── buttons ────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: var(--radius);
+    border: 1px solid transparent; font-size: 15px; font-weight: 600;
+    letter-spacing: -0.005em; white-space: nowrap;
+    transition: transform .05s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn svg { width: 16px; height: 16px; }
+  .btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .btn-primary:hover { background: color-mix(in oklch, var(--accent) 86%, white); }
+  .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+  .btn-secondary:hover { border-color: var(--muted); }
+  .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 6px; }
+  .btn-ghost:hover { color: var(--accent); }
+  .btn-arrow::after { content: '\2192'; transition: transform .15s ease; }
+  .btn-arrow:hover::after { transform: translateX(3px); }
+
+  /* ─── cards ──────────────────────────────────────────────────────── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px; }
+  .card-flat { background: transparent; border: 0; padding: 0; }
+
+  /* ─── feature ────────────────────────────────────────────────────── */
+  .feature .feature-mark {
+    width: 40px; height: 40px; display: grid; place-items: center;
+    border: 1px solid var(--border); border-radius: 11px;
+    color: var(--accent); margin-bottom: var(--gap-md);
+    background: var(--surface);
+  }
+  .feature .feature-mark svg { width: 19px; height: 19px; }
+  .feature h3 { margin-bottom: 7px; }
+  .feature p  { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* ─── pill / tag ─────────────────────────────────────────────────── */
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 11px; background: var(--accent-soft); color: var(--accent);
+    border-radius: 999px; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .tag {
+    display: inline-flex; align-items: center; padding: 5px 11px;
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    border-radius: 999px; font-size: 12.5px; font-family: var(--font-mono);
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* ─── hero ───────────────────────────────────────────────────────── */
+  .hero { padding-block: clamp(64px, 9vw, 116px); }
+  .hero-split { display: grid; grid-template-columns: 1.02fr 0.98fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  @media (max-width: 940px) { .hero-split { grid-template-columns: 1fr; } }
+  .hero h1 { margin-bottom: var(--gap-md); }
+  .hero .lead { margin-bottom: var(--gap-lg); }
+  .hero-cta { display: flex; gap: var(--gap-sm); flex-wrap: wrap; }
+  .hero-facts { display: flex; flex-wrap: wrap; gap: var(--gap-lg); margin-top: var(--gap-xl); padding-top: var(--gap-md); border-top: 1px solid var(--border); }
+  .hero-fact { display: flex; flex-direction: column; gap: 2px; }
+  .hero-fact b { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+  .hero-fact span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  figure.hero-fig { margin: 0; }
+  .hero-fig img {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: var(--radius-lg); border: 1px solid var(--border);
+  }
+  .hero-fig figcaption { margin-top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* ─── verdict strip (signature) ──────────────────────────────────── */
+  .verdict-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-sm) var(--gap-lg);
+    margin-top: var(--gap-lg); padding: 14px 18px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); font-family: var(--font-mono); font-size: 12.5px;
+  }
+  .verdict-bar .v-label { color: var(--muted); letter-spacing: 0.06em; }
+  .v-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); }
+  .v-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+
+  /* ─── topic tabs (interactive) ───────────────────────────────────── */
+  .topic-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .topic-tab {
+    appearance: none; background: transparent; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 8px 16px; font-size: 14px; font-weight: 500;
+    transition: color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .topic-tab:hover { color: var(--fg); border-color: var(--muted); }
+  .topic-tab.is-active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .topic-panel h3 { margin-bottom: 8px; }
+  .topic-panel p { margin: 0 0 var(--gap-md); color: var(--muted); font-size: 15px; max-width: 52ch; }
+  .topic-complexity { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); margin-top: var(--gap-md); }
+  .topic-complexity b { color: var(--accent); font-weight: 600; }
+  .topic-visual {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 18px;
+  }
+  .topic-visual svg { width: 100%; height: auto; }
+  .topic-visual figcaption { margin-top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  /* SVG diagram色板 —— 只用 token */
+  .dg-cell      { fill: var(--surface); stroke: var(--border); stroke-width: 1.2; }
+  .dg-cell-hi   { fill: color-mix(in oklch, var(--accent) 26%, var(--surface)); stroke: var(--accent); stroke-width: 1.8; }
+  .dg-node      { fill: var(--surface); stroke: var(--border); stroke-width: 1.6; }
+  .dg-node-hi   { fill: color-mix(in oklch, var(--accent) 24%, var(--surface)); stroke: var(--accent); stroke-width: 2; }
+  .dg-edge      { stroke: var(--border); stroke-width: 2; fill: none; }
+  .dg-edge-hi   { stroke: var(--accent); stroke-width: 3; fill: none; }
+  .dg-txt       { fill: var(--fg); font-family: var(--font-mono); font-size: 12px; }
+  .dg-txt-hi    { fill: var(--accent); font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+  .dg-anno      { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+
+  /* ─── log row ────────────────────────────────────────────────────── */
+  .log-row {
+    display: grid; grid-template-columns: 116px 1fr auto; gap: var(--gap-lg);
+    padding: 22px 0; border-top: 1px solid var(--border); align-items: baseline;
+  }
+  .log-row h3 { font-size: 18px; }
+  .log-row .dek { margin: 5px 0 0; color: var(--muted); font-size: 14px; }
+  @media (max-width: 720px) { .log-row { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* ─── join ───────────────────────────────────────────────────────── */
+  .join-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--gap-sm); }
+  .join-list li { display: flex; gap: 12px; align-items: flex-start; color: var(--muted); font-size: 15px; }
+  .join-list svg { width: 17px; height: 17px; color: var(--accent); flex: none; margin-top: 3px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; color: var(--muted); }
+  .input, .textarea, .select {
+    width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+    border-radius: var(--radius); background: var(--bg); color: var(--fg);
+    font: inherit; font-size: 15px;
+  }
+  .input:focus, .textarea:focus, .select:focus {
+    outline: 2px solid var(--accent-soft); border-color: var(--accent);
+  }
+  .textarea { min-height: 84px; resize: vertical; line-height: 1.55; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-md); }
+  @media (max-width: 620px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-note { font-size: 12.5px; color: var(--muted); margin: 0; }
+  .form-ok {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: var(--gap-md); padding: 12px 14px;
+    border: 1px solid color-mix(in oklch, var(--accent) 40%, transparent);
+    background: var(--accent-soft); color: var(--fg);
+    border-radius: var(--radius); font-size: 14px;
+  }
+  .form-ok svg { width: 17px; height: 17px; color: var(--accent); flex: none; }
+
+  /* ─── cta + footer ───────────────────────────────────────────────── */
+  .cta-strip { text-align: center; }
+  .cta-strip .lead { margin: 16px auto 30px; }
+  .pagefoot { padding-block: var(--gap-xl); color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+  .pagefoot .row-between { flex-wrap: wrap; gap: var(--gap-md); }
+  .foot-links { display: flex; gap: var(--gap-md); flex-wrap: wrap; }
+  .foot-links a:hover { color: var(--fg); }
+
+  /* ─── 倒计时 ────────────────────────────────────────────────────── */
+  .countdown {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: var(--gap-md); padding: 20px 24px; margin-bottom: var(--gap-lg);
+    border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);
+  }
+  .countdown .cd-label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  .countdown .cd-title { margin: 0; font-size: 17px; font-weight: 600; }
+  .countdown .cd-sub { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+  .cd-timer { display: flex; gap: var(--gap-sm); }
+  .cd-unit { min-width: 62px; text-align: center; padding: 10px 8px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+  .cd-unit b { display: block; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 26px; font-weight: 600; line-height: 1.1; }
+  .cd-unit span { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── 题单浏览器 ─────────────────────────────────────────────────── */
+  .toolbar { display: flex; flex-wrap: wrap; gap: var(--gap-sm); align-items: center; }
+  .search-wrap { position: relative; flex: 1 1 240px; min-width: 0; }
+  .search-wrap > svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+  .search-wrap .input { padding-left: 38px; }
+  .select-sm { width: auto; min-width: 140px; padding: 10px 12px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    appearance: none; background: transparent; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 14px; font-size: 13px; font-family: var(--font-mono);
+    transition: color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .chip:hover { color: var(--fg); border-color: var(--muted); }
+  .chip.is-active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .result-count { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .result-count b { color: var(--accent); font-weight: 600; }
+  .ds-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .ds-table th, .ds-table td { padding: 13px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .ds-table th { color: var(--muted); font-weight: 500; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .ds-table tbody tr:hover { background: var(--fg-soft); }
+  .ds-table .num-col { text-align: right; }
+  .table-scroll { overflow-x: auto; }
+  .diff { font-family: var(--font-mono); font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; }
+  .diff-1 { color: var(--c-easy);  border-color: color-mix(in oklch, var(--c-easy) 42%, transparent); }
+  .diff-2 { color: var(--c-mid);   border-color: color-mix(in oklch, var(--c-mid) 42%, transparent); }
+  .diff-3 { color: var(--c-hard);  border-color: color-mix(in oklch, var(--c-hard) 42%, transparent); }
+  .diff-4 { color: var(--c-expert); border-color: color-mix(in oklch, var(--c-expert) 42%, transparent); }
+  .empty-state { padding: 36px 0; text-align: center; color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+
+  /* ─── 训练打卡 ───────────────────────────────────────────────────── */
+  .progress-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-sm); margin-bottom: var(--gap-md); }
+  .progress-track { height: 8px; border-radius: 999px; background: var(--fg-soft); overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .35s ease; }
+  .progress-pct { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .progress-pct b { color: var(--accent); font-weight: 600; }
+  .check-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: var(--gap-md); }
+  @media (max-width: 720px) { .check-grid { grid-template-columns: 1fr; } }
+  .check-item {
+    position: relative; display: flex; align-items: center; gap: 11px; padding: 12px 14px;
+    border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
+    cursor: pointer; font-size: 14.5px; transition: border-color .15s ease, background .15s ease;
+  }
+  .check-item:hover { border-color: var(--muted); }
+  .check-item input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+  .check-box {
+    width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border);
+    display: grid; place-items: center; flex: none; color: transparent; transition: all .15s ease;
+  }
+  .check-box svg { width: 13px; height: 13px; }
+  .check-item:has(input:checked) { border-color: color-mix(in oklch, var(--accent) 45%, transparent); background: var(--accent-soft); }
+  .check-item:has(input:checked) .check-box { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .check-item:has(input:focus-visible) { outline: 2px solid var(--accent-soft); }
+  .check-item .ck-topic { margin-left: auto; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+
+  /* ─── 算法可视化 ─────────────────────────────────────────────────── */
+  .viz-stage {
+    display: flex; align-items: flex-end; gap: 6px; height: 220px; padding: 18px;
+    border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);
+  }
+  .viz-bar { flex: 1; background: var(--border); border-radius: 5px 5px 0 0; min-height: 5px; transition: height .18s ease, background .18s ease; }
+  .viz-bar.is-active { background: var(--accent); }
+  .viz-bar.is-sorted { background: color-mix(in oklch, var(--accent) 55%, var(--surface)); }
+  .viz-controls { display: flex; flex-wrap: wrap; gap: var(--gap-sm); align-items: center; margin-top: var(--gap-md); }
+  .viz-status { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-left: auto; }
+  .viz-status b { color: var(--accent); font-weight: 600; }
+
+  /* ─── FAQ ────────────────────────────────────────────────────────── */
+  .faq { border-top: 1px solid var(--border); }
+  .faq details { border-bottom: 1px solid var(--border); }
+  .faq summary {
+    list-style: none; cursor: pointer; padding: 20px 0;
+    display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md);
+    font-size: 17px; font-weight: 600;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .faq-icon { width: 18px; height: 18px; color: var(--muted); flex: none; transition: transform .2s ease, color .2s ease; }
+  .faq details[open] summary .faq-icon { transform: rotate(45deg); color: var(--accent); }
+  .faq .faq-body { padding: 0 0 22px; color: var(--muted); font-size: 15px; max-width: 70ch; }
+  .faq .faq-body p { margin: 0; }
+
+  /* ─── 返回顶部 ───────────────────────────────────────────────────── */
+  .to-top {
+    position: fixed; right: 24px; bottom: 24px; z-index: 30;
+    width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center;
+    background: var(--surface); color: var(--fg); border: 1px solid var(--border);
+    box-shadow: 0 10px 30px -8px var(--fg-soft);
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  }
+  .to-top svg { width: 20px; height: 20px; }
+  .to-top:hover { border-color: var(--accent); color: var(--accent); }
+  .to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+</style>
+</head>
+<body>
+
+<header class="topnav" data-section="topnav">
+  <div class="container topnav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>
+      </span>
+      <span class="brand-text">
+        <b>宜春学院算法队</b>
+        <span>YCU · Algo Team</span>
+      </span>
+    </a>
+    <nav aria-label="主导航">
+      <a href="#training">训练体系</a>
+      <a href="#topics">训练方向</a>
+      <a href="#problems">题单</a>
+      <a href="#contests">竞赛安排</a>
+      <a href="#progress">训练打卡</a>
+      <a href="#join">加入我们</a>
+    </nav>
+    <a class="btn btn-primary" href="#join">报名选拔</a>
+  </div>
+</header>
+
+<main id="content">
+
+  <!-- Hero -->
+  <section class="section hero" id="top" data-section="hero">
+    <div class="container hero-split">
+      <div>
+        <p class="eyebrow">宜春学院 · 程序设计竞赛集训队</p>
+        <h1>把每一道题，都当作一次上机实战。</h1>
+        <p class="lead">算法队面向宜春学院全体在校学生，围绕数据结构、算法设计与编程竞赛开展系统训练，用固定的训练节奏和真实的赛题环境，把基础扎实、愿意投入的同学带到赛场上去。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#join">报名选拔</a>
+          <a class="btn btn-secondary btn-arrow" href="#training">了解训练体系</a>
+        </div>
+
+        <div class="verdict-bar" aria-label="训练环境状态示意">
+          <span class="v-label">VERDICT</span>
+          <span class="v-chip"><span class="v-dot"></span>Accepted</span>
+          <span class="v-label">LANG</span><span>C++17 / Python</span>
+          <span class="v-label">JUDGE</span><span>校内 OJ · 洛谷 · Codeforces</span>
+        </div>
+      </div>
+
+      <figure class="hero-fig">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&q=80"
+             alt="屏幕上显示的多行程序代码，代表算法队的日常上机训练环境"
+             width="1600" height="1200" fetchpriority="high" />
+        <figcaption>上机训练 · 图片来源：Unsplash</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 训练体系 -->
+  <section class="section" id="training" data-section="features">
+    <div class="container stack" style="gap: 48px;">
+      <div style="max-width: 40ch;">
+        <p class="eyebrow">训练体系</p>
+        <h2>从语法过关，到赛场拿分。</h2>
+        <p class="lead" style="margin-top: 14px;">训练按阶段推进，每周有任务、每次有讲解、每轮有复盘。不靠临时冲刺，靠稳定的积累。</p>
+      </div>
+      <div class="grid-3">
+        <div class="feature card-flat">
+          <div class="feature-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+          </div>
+          <h3>基础集训</h3>
+          <p>面向零基础与入门同学，从 C++ 语法、复杂度分析讲到基础数据结构，配合课后题单，先把“写得对、跑得动”练扎实。</p>
+        </div>
+        <div class="feature card-flat">
+          <div class="feature-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
+          </div>
+          <h3>专题强化</h3>
+          <p>按图论、动态规划、数据结构、字符串等专题逐个突破，每期配一套精选赛题，讲题以思路推导和方法选择为主。</p>
+        </div>
+        <div class="feature card-flat">
+          <div class="feature-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          </div>
+          <h3>模拟赛与复盘</h3>
+          <p>按正式赛制组织限时模拟赛，赛后统一讲解与错题归档，训练临场策略、时间分配和队友间的分工配合。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 训练方向（交互） -->
+  <section class="section" id="topics" data-section="topics">
+    <div class="container stack" style="gap: 40px;">
+      <div style="max-width: 44ch;">
+        <p class="eyebrow">训练方向</p>
+        <h2>六个专题，覆盖竞赛的主要战场。</h2>
+        <p class="lead" style="margin-top: 14px;">点击下方专题，查看每个方向的核心考点与典型方法的复杂度。</p>
+      </div>
+
+      <div class="topic-tabs" role="tablist" aria-label="训练专题">
+        <button class="topic-tab is-active" type="button" role="tab" aria-selected="true" data-topic="basic">基础算法</button>
+        <button class="topic-tab" type="button" role="tab" aria-selected="false" data-topic="ds">数据结构</button>
+        <button class="topic-tab" type="button" role="tab" aria-selected="false" data-topic="graph">图论</button>
+        <button class="topic-tab" type="button" role="tab" aria-selected="false" data-topic="dp">动态规划</button>
+        <button class="topic-tab" type="button" role="tab" aria-selected="false" data-topic="math">数学</button>
+        <button class="topic-tab" type="button" role="tab" aria-selected="false" data-topic="string">字符串</button>
+      </div>
+
+      <div class="grid-2-1">
+        <div>
+          <div class="topic-panel" role="tabpanel" data-topic-panel="basic">
+            <h3>基础算法</h3>
+            <p>先把复杂度意识建立起来：同样的结果，不同写法的代价可能相差几个数量级。基础阶段的重点是枚举、排序与二分这些“每天都在用”的工具。</p>
+            <div class="tag-row">
+              <span class="tag">复杂度分析</span><span class="tag">排序</span><span class="tag">二分查找</span>
+              <span class="tag">双指针</span><span class="tag">前缀和</span><span class="tag">贪心</span>
+            </div>
+            <p class="topic-complexity">典型复杂度：二分查找 <b>O(log n)</b> · 排序 <b>O(n log n)</b> · 前缀和查询 <b>O(1)</b></p>
+          </div>
+
+          <div class="topic-panel" role="tabpanel" data-topic-panel="ds" hidden>
+            <h3>数据结构</h3>
+            <p>把“维护什么、查询什么”想清楚，数据结构自然就选出来了。重点是并查集、堆、线段树与树状数组这几类高频结构。</p>
+            <div class="tag-row">
+              <span class="tag">栈与队列</span><span class="tag">并查集</span><span class="tag">堆</span>
+              <span class="tag">线段树</span><span class="tag">树状数组</span><span class="tag">单调队列</span>
+            </div>
+            <p class="topic-complexity">典型复杂度：并查集近似 <b>O(α(n))</b> · 线段树单点更新与区间查询 <b>O(log n)</b></p>
+          </div>
+
+          <div class="topic-panel" role="tabpanel" data-topic-panel="graph" hidden>
+            <h3>图论</h3>
+            <p>从建图开始，到最短路、最小生成树与拓扑排序，再到二分图匹配和网络流。图论题的关键往往在于问题怎么抽象成图。</p>
+            <div class="tag-row">
+              <span class="tag">最短路</span><span class="tag">最小生成树</span><span class="tag">拓扑排序</span>
+              <span class="tag">二分图匹配</span><span class="tag">网络流</span>
+            </div>
+            <p class="topic-complexity">典型复杂度：Dijkstra（堆优化）<b>O((n+m) log n)</b> · Kruskal <b>O(m log m)</b></p>
+          </div>
+
+          <div class="topic-panel" role="tabpanel" data-topic-panel="dp" hidden>
+            <h3>动态规划</h3>
+            <p>DP 的核心是定义好状态和转移。训练从线性 DP 与背包入手，逐步过渡到区间、树形与状态压缩 DP。</p>
+            <div class="tag-row">
+              <span class="tag">线性 DP</span><span class="tag">背包</span><span class="tag">区间 DP</span>
+              <span class="tag">树形 DP</span><span class="tag">状态压缩</span><span class="tag">数位 DP</span>
+            </div>
+            <p class="topic-complexity">典型复杂度：0/1 背包 <b>O(n·V)</b> · 状压 DP <b>O(2ⁿ·n)</b></p>
+          </div>
+
+          <div class="topic-panel" role="tabpanel" data-topic-panel="math" hidden>
+            <h3>数学</h3>
+            <p>数论与组合计数是竞赛高频考点，配合快速幂与逆元处理取模运算，也要能应付概率期望与简单博弈问题。</p>
+            <div class="tag-row">
+              <span class="tag">质数与筛法</span><span class="tag">同余与逆元</span><span class="tag">快速幂</span>
+              <span class="tag">组合计数</span><span class="tag">概率与期望</span><span class="tag">博弈论</span>
+            </div>
+            <p class="topic-complexity">典型复杂度：埃氏筛 <b>O(n log log n)</b> · 快速幂 <b>O(log n)</b></p>
+          </div>
+
+          <div class="topic-panel" role="tabpanel" data-topic-panel="string" hidden>
+            <h3>字符串</h3>
+            <p>从模式匹配到多模式匹配，字符串题讲究实现细节与边界处理。KMP、字符串哈希与 Trie 是入门必掌握的三件工具。</p>
+            <div class="tag-row">
+              <span class="tag">KMP</span><span class="tag">字符串哈希</span><span class="tag">Trie</span>
+              <span class="tag">Z 函数</span><span class="tag">后缀数组</span><span class="tag">AC 自动机</span>
+            </div>
+            <p class="topic-complexity">典型复杂度：KMP 匹配 <b>O(n+m)</b> · 字符串哈希比较 <b>O(1)</b></p>
+          </div>
+        </div>
+
+        <figure class="topic-visual">
+          <svg viewBox="0 0 480 300" role="img" aria-label="训练专题示意图，随所选专题切换">
+
+            <g data-topic-visual="basic">
+              <text class="dg-anno" x="24" y="40">二分查找 · 在有序数组中定位目标</text>
+              <g>
+                <rect class="dg-cell" x="30" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="50" y="148" text-anchor="middle">3</text>
+                <rect class="dg-cell" x="76" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="96" y="148" text-anchor="middle">7</text>
+                <rect class="dg-cell" x="122" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="142" y="148" text-anchor="middle">11</text>
+                <rect class="dg-cell" x="168" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="188" y="148" text-anchor="middle">18</text>
+                <rect class="dg-cell-hi" x="214" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt-hi" x="234" y="148" text-anchor="middle">24</text>
+                <rect class="dg-cell" x="260" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="280" y="148" text-anchor="middle">31</text>
+                <rect class="dg-cell" x="306" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="326" y="148" text-anchor="middle">45</text>
+                <rect class="dg-cell" x="352" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="372" y="148" text-anchor="middle">52</text>
+                <rect class="dg-cell" x="398" y="120" width="40" height="46" rx="5"/>
+                <text class="dg-txt" x="418" y="148" text-anchor="middle">68</text>
+              </g>
+              <text class="dg-anno" x="50" y="196" text-anchor="middle">low</text>
+              <text class="dg-anno" x="234" y="196" text-anchor="middle">mid</text>
+              <text class="dg-anno" x="418" y="196" text-anchor="middle">high</text>
+              <line class="dg-edge" x1="50" y1="205" x2="50" y2="230"/>
+              <line class="dg-edge" x1="418" y1="205" x2="418" y2="230"/>
+              <text class="dg-anno" x="24" y="262">每步排除一半区间 → O(log n)</text>
+            </g>
+
+            <g data-topic-visual="ds" style="display:none">
+              <text class="dg-anno" x="24" y="40">线段树 · 二叉区间结构</text>
+              <line class="dg-edge" x1="240" y1="72" x2="140" y2="128"/>
+              <line class="dg-edge" x1="240" y1="72" x2="340" y2="128"/>
+              <line class="dg-edge" x1="140" y1="128" x2="80" y2="186"/>
+              <line class="dg-edge" x1="140" y1="128" x2="200" y2="186"/>
+              <line class="dg-edge" x1="340" y1="128" x2="280" y2="186"/>
+              <line class="dg-edge" x1="340" y1="128" x2="400" y2="186"/>
+              <circle class="dg-node-hi" cx="240" cy="72" r="20"/>
+              <text class="dg-txt-hi" x="240" y="77" text-anchor="middle">1-8</text>
+              <circle class="dg-node" cx="140" cy="128" r="20"/>
+              <text class="dg-txt" x="140" y="133" text-anchor="middle">1-4</text>
+              <circle class="dg-node" cx="340" cy="128" r="20"/>
+              <text class="dg-txt" x="340" y="133" text-anchor="middle">5-8</text>
+              <circle class="dg-node" cx="80" cy="186" r="20"/>
+              <text class="dg-txt" x="80" y="191" text-anchor="middle">1-2</text>
+              <circle class="dg-node" cx="200" cy="186" r="20"/>
+              <text class="dg-txt" x="200" y="191" text-anchor="middle">3-4</text>
+              <circle class="dg-node" cx="280" cy="186" r="20"/>
+              <text class="dg-txt" x="280" y="191" text-anchor="middle">5-6</text>
+              <circle class="dg-node" cx="400" cy="186" r="20"/>
+              <text class="dg-txt" x="400" y="191" text-anchor="middle">7-8</text>
+              <text class="dg-anno" x="24" y="262">区间合并向上维护 → 更新 / 查询 O(log n)</text>
+            </g>
+
+            <g data-topic-visual="graph" style="display:none">
+              <text class="dg-anno" x="24" y="40">最短路 · 在带权图中寻找最短路径</text>
+              <line class="dg-edge" x1="70" y1="150" x2="180" y2="70"/>
+              <line class="dg-edge-hi" x1="70" y1="150" x2="180" y2="70"/>
+              <line class="dg-edge" x1="70" y1="150" x2="180" y2="230"/>
+              <line class="dg-edge-hi" x1="180" y1="70" x2="300" y2="70"/>
+              <line class="dg-edge" x1="180" y1="70" x2="300" y2="230"/>
+              <line class="dg-edge" x1="180" y1="230" x2="300" y2="230"/>
+              <line class="dg-edge" x1="180" y1="230" x2="300" y2="70"/>
+              <line class="dg-edge-hi" x1="300" y1="70" x2="410" y2="150"/>
+              <line class="dg-edge" x1="300" y1="230" x2="410" y2="150"/>
+              <circle class="dg-node-hi" cx="70" cy="150" r="21"/>
+              <text class="dg-txt-hi" x="70" y="155" text-anchor="middle">A</text>
+              <circle class="dg-node-hi" cx="180" cy="70" r="21"/>
+              <text class="dg-txt-hi" x="180" y="75" text-anchor="middle">B</text>
+              <circle class="dg-node" cx="180" cy="230" r="21"/>
+              <text class="dg-txt" x="180" y="235" text-anchor="middle">C</text>
+              <circle class="dg-node-hi" cx="300" cy="70" r="21"/>
+              <text class="dg-txt-hi" x="300" y="75" text-anchor="middle">D</text>
+              <circle class="dg-node" cx="300" cy="230" r="21"/>
+              <text class="dg-txt" x="300" y="235" text-anchor="middle">E</text>
+              <circle class="dg-node-hi" cx="410" cy="150" r="21"/>
+              <text class="dg-txt-hi" x="410" y="155" text-anchor="middle">F</text>
+              <text class="dg-anno" x="24" y="262">高亮路径 A → B → D → F 为当前最短路径</text>
+            </g>
+
+            <g data-topic-visual="dp" style="display:none">
+              <text class="dg-anno" x="24" y="40">动态规划 · 网格上的状态转移</text>
+              <g>
+                <rect class="dg-cell-hi" x="115" y="70" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="167" y="70" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="219" y="70" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="271" y="70" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="323" y="70" width="46" height="34" rx="4"/>
+
+                <rect class="dg-cell" x="115" y="110" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="167" y="110" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="219" y="110" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="271" y="110" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="323" y="110" width="46" height="34" rx="4"/>
+
+                <rect class="dg-cell" x="115" y="150" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="167" y="150" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="219" y="150" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="271" y="150" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="323" y="150" width="46" height="34" rx="4"/>
+
+                <rect class="dg-cell" x="115" y="190" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="167" y="190" width="46" height="34" rx="4"/>
+                <rect class="dg-cell" x="219" y="190" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="271" y="190" width="46" height="34" rx="4"/>
+                <rect class="dg-cell-hi" x="323" y="190" width="46" height="34" rx="4"/>
+              </g>
+              <text class="dg-anno" x="115" y="252">状态 dp[i][j] 由上方与左方的子问题转移而来</text>
+            </g>
+
+            <g data-topic-visual="math" style="display:none">
+              <text class="dg-anno" x="24" y="40">质数筛 · 标记 1–24 中的质数</text>
+              <g>
+                <rect class="dg-cell" x="40" y="72" width="46" height="40" rx="4"/><text class="dg-txt" x="63" y="98" text-anchor="middle">1</text>
+                <rect class="dg-cell-hi" x="92" y="72" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="115" y="98" text-anchor="middle">2</text>
+                <rect class="dg-cell-hi" x="144" y="72" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="167" y="98" text-anchor="middle">3</text>
+                <rect class="dg-cell" x="196" y="72" width="46" height="40" rx="4"/><text class="dg-txt" x="219" y="98" text-anchor="middle">4</text>
+                <rect class="dg-cell-hi" x="248" y="72" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="271" y="98" text-anchor="middle">5</text>
+                <rect class="dg-cell" x="300" y="72" width="46" height="40" rx="4"/><text class="dg-txt" x="323" y="98" text-anchor="middle">6</text>
+                <rect class="dg-cell-hi" x="352" y="72" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="375" y="98" text-anchor="middle">7</text>
+
+                <rect class="dg-cell" x="40" y="118" width="46" height="40" rx="4"/><text class="dg-txt" x="63" y="144" text-anchor="middle">8</text>
+                <rect class="dg-cell" x="92" y="118" width="46" height="40" rx="4"/><text class="dg-txt" x="115" y="144" text-anchor="middle">9</text>
+                <rect class="dg-cell" x="144" y="118" width="46" height="40" rx="4"/><text class="dg-txt" x="167" y="144" text-anchor="middle">10</text>
+                <rect class="dg-cell-hi" x="196" y="118" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="219" y="144" text-anchor="middle">11</text>
+                <rect class="dg-cell" x="248" y="118" width="46" height="40" rx="4"/><text class="dg-txt" x="271" y="144" text-anchor="middle">12</text>
+                <rect class="dg-cell-hi" x="300" y="118" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="323" y="144" text-anchor="middle">13</text>
+                <rect class="dg-cell" x="352" y="118" width="46" height="40" rx="4"/><text class="dg-txt" x="375" y="144" text-anchor="middle">14</text>
+
+                <rect class="dg-cell" x="40" y="164" width="46" height="40" rx="4"/><text class="dg-txt" x="63" y="190" text-anchor="middle">15</text>
+                <rect class="dg-cell" x="92" y="164" width="46" height="40" rx="4"/><text class="dg-txt" x="115" y="190" text-anchor="middle">16</text>
+                <rect class="dg-cell-hi" x="144" y="164" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="167" y="190" text-anchor="middle">17</text>
+                <rect class="dg-cell" x="196" y="164" width="46" height="40" rx="4"/><text class="dg-txt" x="219" y="190" text-anchor="middle">18</text>
+                <rect class="dg-cell-hi" x="248" y="164" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="271" y="190" text-anchor="middle">19</text>
+                <rect class="dg-cell" x="300" y="164" width="46" height="40" rx="4"/><text class="dg-txt" x="323" y="190" text-anchor="middle">20</text>
+                <rect class="dg-cell" x="352" y="164" width="46" height="40" rx="4"/><text class="dg-txt" x="375" y="190" text-anchor="middle">21</text>
+
+                <rect class="dg-cell" x="40" y="210" width="46" height="40" rx="4"/><text class="dg-txt" x="63" y="236" text-anchor="middle">22</text>
+                <rect class="dg-cell-hi" x="92" y="210" width="46" height="40" rx="4"/><text class="dg-txt-hi" x="115" y="236" text-anchor="middle">23</text>
+                <rect class="dg-cell" x="144" y="210" width="46" height="40" rx="4"/><text class="dg-txt" x="167" y="236" text-anchor="middle">24</text>
+              </g>
+            </g>
+
+            <g data-topic-visual="string" style="display:none">
+              <text class="dg-anno" x="24" y="46">KMP · 在主串中匹配模式串</text>
+              <g>
+                <rect class="dg-cell" x="40" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="55" y="104" text-anchor="middle">A</text>
+                <rect class="dg-cell" x="74" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="89" y="104" text-anchor="middle">B</text>
+                <rect class="dg-cell" x="108" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="123" y="104" text-anchor="middle">A</text>
+                <rect class="dg-cell" x="142" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="157" y="104" text-anchor="middle">B</text>
+                <rect class="dg-cell" x="176" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="191" y="104" text-anchor="middle">D</text>
+                <rect class="dg-cell" x="210" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="225" y="104" text-anchor="middle">A</text>
+                <rect class="dg-cell" x="244" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="259" y="104" text-anchor="middle">B</text>
+                <rect class="dg-cell" x="278" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="293" y="104" text-anchor="middle">A</text>
+                <rect class="dg-cell" x="312" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="327" y="104" text-anchor="middle">B</text>
+                <rect class="dg-cell-hi" x="346" y="80" width="30" height="38" rx="4"/><text class="dg-txt-hi" x="361" y="104" text-anchor="middle">C</text>
+                <rect class="dg-cell" x="380" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="395" y="104" text-anchor="middle">D</text>
+                <rect class="dg-cell" x="414" y="80" width="30" height="38" rx="4"/><text class="dg-txt" x="429" y="104" text-anchor="middle">E</text>
+              </g>
+              <g>
+                <rect class="dg-cell" x="244" y="140" width="30" height="38" rx="4"/><text class="dg-txt" x="259" y="164" text-anchor="middle">A</text>
+                <rect class="dg-cell" x="278" y="140" width="30" height="38" rx="4"/><text class="dg-txt" x="293" y="164" text-anchor="middle">B</text>
+                <rect class="dg-cell" x="312" y="140" width="30" height="38" rx="4"/><text class="dg-txt" x="327" y="164" text-anchor="middle">A</text>
+                <rect class="dg-cell" x="346" y="140" width="30" height="38" rx="4"/><text class="dg-txt" x="361" y="164" text-anchor="middle">B</text>
+                <rect class="dg-cell-hi" x="380" y="140" width="30" height="38" rx="4"/><text class="dg-txt-hi" x="395" y="164" text-anchor="middle">C</text>
+              </g>
+              <line class="dg-edge-hi" x1="244" y1="188" x2="410" y2="188"/>
+              <text class="dg-anno" x="327" y="212" text-anchor="middle">匹配成功</text>
+              <text class="dg-anno" x="24" y="256">失配时按 next 数组回退，主串指针不回退 → O(n+m)</text>
+            </g>
+          </svg>
+          <figcaption>训练专题示意图 · 随所选方向切换</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 算法可视化 -->
+  <section class="section" id="visualizer" data-section="visualizer">
+    <div class="container stack" style="gap: 40px;">
+      <div style="max-width: 48ch;">
+        <p class="eyebrow">算法可视化</p>
+        <h2>看得见过程，才想得清算法。</h2>
+        <p class="lead" style="margin-top: 14px;">以冒泡排序为例：每一轮比较相邻两个元素，较大的值像气泡一样浮向末尾。点击按钮，用慢速动画观察整个排序过程。</p>
+      </div>
+      <div>
+        <div class="viz-stage" id="viz-stage" aria-label="冒泡排序可视化舞台"></div>
+        <div class="viz-controls">
+          <button class="btn btn-primary" type="button" id="viz-run">开始排序</button>
+          <button class="btn btn-secondary" type="button" id="viz-reset">重新打乱</button>
+          <span class="viz-status" aria-live="polite">比较 <b id="viz-comp">0</b> 次 · 交换 <b id="viz-swap">0</b> 次 · <span id="viz-phase">待开始</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 题单 -->
+  <section class="section" id="problems" data-section="problems">
+    <div class="container stack" style="gap: 24px;">
+      <div style="max-width: 48ch;">
+        <p class="eyebrow">题单</p>
+        <h2>按专题和难度，找到你的下一道题。</h2>
+        <p class="lead" style="margin-top: 14px;">下面是算法队整理的示例题单。输入关键词，或按专题与难度筛选。</p>
+      </div>
+
+      <div class="toolbar" role="search">
+        <label class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="input" id="pb-search" type="search" placeholder="搜索题目或知识点…" aria-label="搜索题目或知识点" />
+        </label>
+        <select class="input select-sm" id="pb-topic" aria-label="按专题筛选">
+          <option value="all">全部专题</option>
+          <option>基础算法</option>
+          <option>数据结构</option>
+          <option>图论</option>
+          <option>动态规划</option>
+          <option>数学</option>
+          <option>字符串</option>
+        </select>
+      </div>
+
+      <div class="chip-row" id="pb-diff" role="group" aria-label="按难度筛选">
+        <button class="chip is-active" type="button" data-diff="all">全部难度</button>
+        <button class="chip" type="button" data-diff="1">入门</button>
+        <button class="chip" type="button" data-diff="2">普及</button>
+        <button class="chip" type="button" data-diff="3">提高</button>
+        <button class="chip" type="button" data-diff="4">省选</button>
+      </div>
+
+      <div class="row-between" style="flex-wrap: wrap;">
+        <span class="result-count">共 <b id="pb-count">0</b> 道题</span>
+        <span class="meta">按 专题 · 难度 · 关键词 组合筛选</span>
+      </div>
+
+      <div class="table-scroll">
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th scope="col">题目</th>
+              <th scope="col">专题</th>
+              <th scope="col">核心考点</th>
+              <th scope="col" class="num-col">难度</th>
+            </tr>
+          </thead>
+          <tbody id="pb-body"></tbody>
+        </table>
+      </div>
+      <p class="empty-state" id="pb-empty" hidden>没有匹配的题目，试试放宽筛选条件。</p>
+      <p class="meta">题单为训练参考示例（题型与经典例题），具体题目与数据请以各在线评测平台为准。</p>
+    </div>
+  </section>
+
+  <!-- 竞赛安排 -->
+  <section class="section" id="contests" data-section="contests">
+    <div class="container">
+      <div class="row-between" style="margin-bottom: 28px; align-items: flex-end;">
+        <div style="max-width: 40ch;">
+          <p class="eyebrow">竞赛安排</p>
+          <h2>以赛代练，贯穿整个学年。</h2>
+        </div>
+      </div>
+
+      <div class="countdown">
+        <div>
+          <p class="cd-label">下一场例行模拟赛</p>
+          <p class="cd-title">周六模拟赛 · 19:00 上机</p>
+          <p class="cd-sub">按正式赛制限时进行，赛后统一讲题与复盘。</p>
+        </div>
+        <div class="cd-timer" id="cd-timer" aria-label="下一场模拟赛倒计时">
+          <div class="cd-unit"><b data-cd="d">00</b><span>Days</span></div>
+          <div class="cd-unit"><b data-cd="h">00</b><span>Hours</span></div>
+          <div class="cd-unit"><b data-cd="m">00</b><span>Mins</span></div>
+          <div class="cd-unit"><b data-cd="s">00</b><span>Secs</span></div>
+        </div>
+      </div>
+
+      <article class="log-row">
+        <span class="meta">每学年秋季</span>
+        <div>
+          <h3>校内选拔赛</h3>
+          <p class="dek">面向全校招新，按赛制上机，择优进入集训队。是加入算法队的主要入口。</p>
+        </div>
+        <span class="pill">招新</span>
+      </article>
+
+      <article class="log-row">
+        <span class="meta">每学年上学期</span>
+        <div>
+          <h3>校内程序设计竞赛</h3>
+          <p class="dek">面向在校学生开放的个人赛，作为平时训练成果的检验，也是校级队员的练兵场。</p>
+        </div>
+        <span class="pill">个人赛</span>
+      </article>
+
+      <article class="log-row">
+        <span class="meta">每学年下学期</span>
+        <div>
+          <h3>团体程序设计天梯赛</h3>
+          <p class="dek">以团队形式参赛，按队伍总分排名。训练重点在分工、协作与稳定得分。</p>
+        </div>
+        <span class="pill">团体赛</span>
+      </article>
+
+      <article class="log-row">
+        <span class="meta">按赛程通知</span>
+        <div>
+          <h3>ICPC / CCPC 区域赛</h3>
+          <p class="dek">由教练带队，从集训队中选拔队伍参加国际大学生程序设计竞赛及中国大学生程序设计竞赛等赛事。</p>
+        </div>
+        <span class="pill">区域赛</span>
+      </article>
+
+      <article class="log-row">
+        <span class="meta">全年</span>
+        <div>
+          <h3>线上训练与周赛</h3>
+          <p class="dek">在 Codeforces、洛谷等平台组织周赛与题单打卡，日常积累比赛场次与解题量。</p>
+        </div>
+        <span class="pill">日常</span>
+      </article>
+
+      <p class="meta" style="margin-top: 20px;">注：以上为算法队的常规训练与参赛节奏，具体时间与名额以学校、学院及大赛官方通知为准。</p>
+    </div>
+  </section>
+
+  <!-- 训练打卡 -->
+  <section class="section" id="progress" data-section="progress">
+    <div class="container stack" style="gap: 28px;">
+      <div style="max-width: 48ch;">
+        <p class="eyebrow">训练打卡</p>
+        <h2>把每个阶段的目标，勾成看得见的进度。</h2>
+        <p class="lead" style="margin-top: 14px;">下面是训练路线的阶段目标。勾选已完成的项，进度会保存在你自己的浏览器本地，刷新后依然保留。</p>
+      </div>
+      <div class="card">
+        <div class="progress-head">
+          <h3>我的训练进度</h3>
+          <span class="progress-pct"><b id="pg-done">0</b> / <span id="pg-total">0</span> 项 · <b id="pg-pct">0%</b></span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="训练进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="pg-bar">
+          <div class="progress-fill" id="pg-fill"></div>
+        </div>
+        <div class="check-grid" id="pg-grid"></div>
+        <div class="row-between" style="margin-top: var(--gap-md); flex-wrap: wrap;">
+          <button class="btn btn-secondary" type="button" id="pg-reset">重置进度</button>
+          <span class="meta" id="pg-saved">进度已保存在本机浏览器</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 加入我们 -->
+  <section class="section" id="join" data-section="join">
+    <div class="container grid-2-1">
+      <div class="stack" style="gap: var(--gap-lg);">
+        <div>
+          <p class="eyebrow">加入我们</p>
+          <h2>不需要你现在就很强，只需要你愿意练。</h2>
+          <p class="lead" style="margin-top: 14px;">算法队欢迎任何年级、任何专业、对编程和算法有兴趣的同学。零基础可以从入门班开始，基础较好的同学可以直接参加选拔。</p>
+        </div>
+
+        <ul class="join-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b style="color: var(--fg);">面向全校</b>：宜春学院在校本科生均可报名，不限专业与年级。</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b style="color: var(--fg);">分级培养</b>：入门、进阶、竞赛三级训练，按当前水平进入合适的阶段。</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b style="color: var(--fg);">老队员带练</b>：高年级队员负责讲题、带节奏、答疑，遇到瓶颈有人可问。</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b style="color: var(--fg);">真实赛场</b>：表现突出的队员将有机会代表学校参加各级程序设计竞赛。</span>
+          </li>
+        </ul>
+
+        <div class="card" style="background: var(--surface);">
+          <h3 style="margin-bottom: 8px;">报名方式</h3>
+          <p style="margin: 0; color: var(--muted); font-size: 15px;">在右侧登记你的报名意向，或留意学院与班级发布的招新通知；选拔赛开始前，我们会通过校内渠道公布时间与场次安排。</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 6px;">报名意向登记</h3>
+        <p class="form-note" style="margin-bottom: var(--gap-md);">这是一个前端演示表单，填写内容不会提交到任何服务器。</p>
+        <form id="join-form" novalidate>
+          <div class="stack" style="gap: var(--gap-md);">
+            <div class="form-grid">
+              <div class="field">
+                <label for="jf-name">姓名</label>
+                <input class="input" id="jf-name" name="name" type="text" placeholder="请输入姓名" autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="jf-sid">学号</label>
+                <input class="input" id="jf-sid" name="sid" type="text" placeholder="请输入学号" inputmode="numeric" />
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="jf-grade">年级</label>
+                <select class="select" id="jf-grade" name="grade">
+                  <option value="">请选择</option>
+                  <option>大一</option>
+                  <option>大二</option>
+                  <option>大三</option>
+                  <option>大四</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="jf-major">专业</label>
+                <input class="input" id="jf-major" name="major" type="text" placeholder="如：计算机科学与技术" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="jf-level">当前编程 / 算法基础</label>
+              <select class="select" id="jf-level" name="level">
+                <option value="">请选择</option>
+                <option>零基础，刚接触编程</option>
+                <option>学过语法，会写简单程序</option>
+                <option>刷过题，掌握基础算法</option>
+                <option>有竞赛经历，想冲区域赛</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="jf-contact">联系方式（QQ / 微信 / 邮箱）</label>
+              <input class="input" id="jf-contact" name="contact" type="text" placeholder="便于后续联系" />
+            </div>
+            <div class="field">
+              <label for="jf-note">想说的话（选填）</label>
+              <textarea class="textarea" id="jf-note" name="note" placeholder="比如：想加入的方向、可投入的时间、目标等"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit" style="justify-content: center;">提交报名意向</button>
+          </div>
+        </form>
+        <div class="form-ok" id="join-ok" hidden role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>已记录你的报名意向（前端演示，未提交到服务器）。请同时留意校内招新通知。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq" data-section="faq">
+    <div class="container">
+      <div style="max-width: 46ch; margin-bottom: var(--gap-lg);">
+        <p class="eyebrow">常见问题</p>
+        <h2>关于算法队，你可能想问。</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>完全零基础可以加入吗？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
+          <div class="faq-body"><p>可以。算法队设有入门班，从 C++ 语法与复杂度讲起，只要愿意投入时间，零基础也能跟上训练节奏。</p></div>
+        </details>
+        <details>
+          <summary>需要什么语言基础？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
+          <div class="faq-body"><p>竞赛以 C++ 为主，训练与讲题基本围绕 C++17 展开；如果你更熟悉 Python，也可以用它入门，后续再逐步过渡。</p></div>
+        </details>
+        <details>
+          <summary>训练会占用多少时间？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
+          <div class="faq-body"><p>常规安排是每周固定一次集中训练，加上课后的题单练习与线上周赛。投入越多，进步越快，但不会强制占用上课时间。</p></div>
+        </details>
+        <details>
+          <summary>没有竞赛经历，能参加区域赛吗？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
+          <div class="faq-body"><p>可以先从校内选拔赛和校内程序设计竞赛起步，随着解题能力提升，再通过选拔加入区域赛队伍。路径是一步一步走出来的。</p></div>
+        </details>
+        <details>
+          <summary>加入后有什么要求？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
+          <div class="faq-body"><p>按时参加训练、完成阶段题单、参加模拟赛并认真复盘。保持稳定的节奏，比偶尔的高强度突击更有效。</p></div>
+        </details>
+        <details>
+          <summary>怎么报名？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
+          <div class="faq-body"><p>留意学院与班级发布的招新通知，同时可以在本页「加入我们」登记报名意向。选拔赛开始前会公布具体时间与场次。</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-strip" data-section="cta-strip">
+    <div class="container" style="max-width: 620px;">
+      <h2>下一道 Accepted，等你来写。</h2>
+      <p class="lead">加入宜春学院算法队，从第一次上机开始，把想法变成能跑起来的代码。</p>
+      <a class="btn btn-primary" href="#join">报名选拔</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pagefoot" data-section="footer">
+  <div class="container row-between">
+    <span>© 2026 宜春学院算法队 · 江西省宜春市</span>
+    <span class="foot-links">
+      <a href="#training">训练体系</a>
+      <a href="#topics">训练方向</a>
+      <a href="#problems">题单</a>
+      <a href="#contests">竞赛安排</a>
+      <a href="#join">加入我们</a>
+      <a href="#faq">常见问题</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* 训练专题 · 标签切换 */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-topic]'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('[data-topic-panel]'));
+  var visuals = Array.prototype.slice.call(document.querySelectorAll('[data-topic-visual]'));
+
+  function activate(id) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-topic') === id;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      p.hidden = p.getAttribute('data-topic-panel') !== id;
+    });
+    visuals.forEach(function (g) {
+      g.style.display = g.getAttribute('data-topic-visual') === id ? '' : 'none';
+    });
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      activate(t.getAttribute('data-topic'));
+    });
+  });
+
+  /* 报名意向登记 · 本地演示提交 */
+  var form = document.getElementById('join-form');
+  var ok = document.getElementById('join-ok');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (ok) { ok.hidden = false; }
+      form.reset();
+      if (ok) { ok.scrollIntoView({ block: 'nearest' }); }
+    });
+  }
+
+  /* 导航当前分区高亮 */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.topnav nav a'));
+  var sections = navLinks
+    .map(function (a) { return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        navLinks.forEach(function (a) {
+          a.classList.toggle('is-current', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function (s) { obs.observe(s); });
+  }
+
+  /* ── 模拟赛倒计时（下一场周六 19:00） ── */
+  (function () {
+    var root = document.getElementById('cd-timer');
+    if (!root) { return; }
+    var dEl = root.querySelector('[data-cd="d"]');
+    var hEl = root.querySelector('[data-cd="h"]');
+    var mEl = root.querySelector('[data-cd="m"]');
+    var sEl = root.querySelector('[data-cd="s"]');
+    function nextSession() {
+      var now = new Date();
+      var t = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0, 0, 0);
+      var delta = (6 - t.getDay() + 7) % 7;
+      t.setDate(t.getDate() + delta);
+      if (t.getTime() <= now.getTime()) { t.setDate(t.getDate() + 7); }
+      return t;
+    }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    var target = nextSession();
+    function tick() {
+      var ms = target.getTime() - Date.now();
+      if (ms < 0) { target = nextSession(); ms = target.getTime() - Date.now(); }
+      var total = Math.floor(ms / 1000);
+      dEl.textContent = pad(Math.floor(total / 86400));
+      hEl.textContent = pad(Math.floor((total % 86400) / 3600));
+      mEl.textContent = pad(Math.floor((total % 3600) / 60));
+      sEl.textContent = pad(total % 60);
+    }
+    tick();
+    window.setInterval(tick, 1000);
+  })();
+
+  /* ── 题单筛选 ── */
+  (function () {
+    var body = document.getElementById('pb-body');
+    if (!body) { return; }
+    var data = [
+      { name: '二分查找', topic: '基础算法', point: '二分 / 边界处理', diff: 1 },
+      { name: '前缀和与差分', topic: '基础算法', point: '前缀和', diff: 1 },
+      { name: '双指针去重', topic: '基础算法', point: '双指针', diff: 2 },
+      { name: '区间调度', topic: '基础算法', point: '贪心', diff: 2 },
+      { name: '并查集', topic: '数据结构', point: '并查集', diff: 2 },
+      { name: '最小堆求 Top-K', topic: '数据结构', point: '堆', diff: 2 },
+      { name: '线段树区间求和', topic: '数据结构', point: '线段树', diff: 3 },
+      { name: '树状数组单点更新', topic: '数据结构', point: '树状数组', diff: 3 },
+      { name: '滑动窗口最值', topic: '数据结构', point: '单调队列', diff: 3 },
+      { name: '邻接表建图', topic: '图论', point: '建图', diff: 1 },
+      { name: '单源最短路', topic: '图论', point: 'Dijkstra', diff: 3 },
+      { name: '最小生成树', topic: '图论', point: 'Kruskal', diff: 3 },
+      { name: '拓扑排序判环', topic: '图论', point: '拓扑排序', diff: 2 },
+      { name: '二分图最大匹配', topic: '图论', point: '匈牙利算法', diff: 4 },
+      { name: '0/1 背包', topic: '动态规划', point: '背包', diff: 2 },
+      { name: '最长上升子序列', topic: '动态规划', point: '线性 DP', diff: 2 },
+      { name: '石子合并', topic: '动态规划', point: '区间 DP', diff: 3 },
+      { name: '树形 DP 入门', topic: '动态规划', point: '树形 DP', diff: 3 },
+      { name: '旅行商问题', topic: '动态规划', point: '状态压缩 DP', diff: 4 },
+      { name: '埃氏筛求质数', topic: '数学', point: '筛法', diff: 1 },
+      { name: '快速幂取模', topic: '数学', point: '快速幂', diff: 2 },
+      { name: '线性求逆元', topic: '数学', point: '同余 / 逆元', diff: 3 },
+      { name: '组合数取模', topic: '数学', point: '组合计数', diff: 3 },
+      { name: 'KMP 模式匹配', topic: '字符串', point: 'KMP', diff: 3 },
+      { name: '字符串哈希判重', topic: '字符串', point: '字符串哈希', diff: 2 },
+      { name: 'Trie 前缀统计', topic: '字符串', point: 'Trie', diff: 3 }
+    ];
+    var diffMeta = { 1: '入门', 2: '普及', 3: '提高', 4: '省选' };
+    var search = document.getElementById('pb-search');
+    var topicSel = document.getElementById('pb-topic');
+    var diffRow = document.getElementById('pb-diff');
+    var countEl = document.getElementById('pb-count');
+    var emptyEl = document.getElementById('pb-empty');
+    var state = { q: '', topic: 'all', diff: 'all' };
+
+    function render() {
+      var q = state.q.trim().toLowerCase();
+      var rows = data.filter(function (p) {
+        if (state.topic !== 'all' && p.topic !== state.topic) { return false; }
+        if (state.diff !== 'all' && String(p.diff) !== state.diff) { return false; }
+        if (q) {
+          var hay = (p.name + ' ' + p.topic + ' ' + p.point).toLowerCase();
+          if (hay.indexOf(q) === -1) { return false; }
+        }
+        return true;
+      });
+      body.innerHTML = '';
+      rows.forEach(function (p) {
+        var tr = document.createElement('tr');
+        var c1 = document.createElement('td'); c1.textContent = p.name;
+        var c2 = document.createElement('td'); c2.textContent = p.topic;
+        var c3 = document.createElement('td'); c3.textContent = p.point;
+        var c4 = document.createElement('td'); c4.className = 'num-col';
+        var badge = document.createElement('span');
+        badge.className = 'diff diff-' + p.diff;
+        badge.textContent = diffMeta[p.diff];
+        c4.appendChild(badge);
+        tr.appendChild(c1); tr.appendChild(c2); tr.appendChild(c3); tr.appendChild(c4);
+        body.appendChild(tr);
+      });
+      countEl.textContent = String(rows.length);
+      emptyEl.hidden = rows.length !== 0;
+    }
+
+    search.addEventListener('input', function () { state.q = search.value; render(); });
+    topicSel.addEventListener('change', function () { state.topic = topicSel.value; render(); });
+    diffRow.addEventListener('click', function (e) {
+      var btn = e.target.closest('.chip');
+      if (!btn) { return; }
+      state.diff = btn.getAttribute('data-diff');
+      Array.prototype.forEach.call(diffRow.querySelectorAll('.chip'), function (c) {
+        c.classList.toggle('is-active', c === btn);
+        c.setAttribute('aria-pressed', c === btn ? 'true' : 'false');
+      });
+      render();
+    });
+    render();
+  })();
+
+  /* ── 训练打卡（本地保存，带安全降级） ── */
+  (function () {
+    var grid = document.getElementById('pg-grid');
+    if (!grid) { return; }
+    var items = [
+      { id: 'p1', label: '掌握 C++ 基础语法与输入输出', stage: '入门' },
+      { id: 'p2', label: '理解时间与空间复杂度', stage: '入门' },
+      { id: 'p3', label: '熟练使用 STL 容器与算法', stage: '入门' },
+      { id: 'p4', label: '掌握排序、二分、前缀和', stage: '入门' },
+      { id: 'p5', label: '独立完成并查集与堆的题目', stage: '进阶' },
+      { id: 'p6', label: '能写出 Dijkstra 与 Kruskal', stage: '进阶' },
+      { id: 'p7', label: '掌握背包与线性 DP', stage: '进阶' },
+      { id: 'p8', label: '完成线段树或树状数组专题', stage: '进阶' },
+      { id: 'p9', label: '掌握字符串 KMP 与哈希', stage: '竞赛' },
+      { id: 'p10', label: '在线上平台完成 30 场 rated 比赛', stage: '竞赛' },
+      { id: 'p11', label: '通过一次校内选拔或模拟赛', stage: '竞赛' },
+      { id: 'p12', label: '组队参加一次区域赛', stage: '竞赛' }
+    ];
+    var STORE_KEY = 'ycu-algo-progress-v1';
+    var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+    var store = (function () {
+      try {
+        var t = '__t__';
+        window.localStorage.setItem(t, t);
+        window.localStorage.removeItem(t);
+        return window.localStorage;
+      } catch (err) { return null; }
+    })();
+
+    var state = {};
+    if (store) {
+      try { state = JSON.parse(store.getItem(STORE_KEY) || '{}') || {}; } catch (err) { state = {}; }
+    }
+
+    var bar = document.getElementById('pg-bar');
+    var doneEl = document.getElementById('pg-done');
+    var totalEl = document.getElementById('pg-total');
+    var pctEl = document.getElementById('pg-pct');
+    var fillEl = document.getElementById('pg-fill');
+
+    function persist() {
+      if (store) { try { store.setItem(STORE_KEY, JSON.stringify(state)); } catch (err) {} }
+    }
+    function update() {
+      var total = items.length;
+      var done = 0;
+      Array.prototype.forEach.call(grid.querySelectorAll('input'), function (i) { if (i.checked) { done += 1; } });
+      var pct = total ? Math.round((done / total) * 100) : 0;
+      doneEl.textContent = String(done);
+      totalEl.textContent = String(total);
+      pctEl.textContent = pct + '%';
+      fillEl.style.width = pct + '%';
+      bar.setAttribute('aria-valuenow', String(pct));
+    }
+
+    items.forEach(function (it) {
+      var label = document.createElement('label');
+      label.className = 'check-item';
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.checked = !!state[it.id];
+      var box = document.createElement('span');
+      box.className = 'check-box';
+      box.innerHTML = checkSvg;
+      var text = document.createElement('span');
+      text.textContent = it.label;
+      var topic = document.createElement('span');
+      topic.className = 'ck-topic';
+      topic.textContent = it.stage;
+      label.appendChild(input);
+      label.appendChild(box);
+      label.appendChild(text);
+      label.appendChild(topic);
+      grid.appendChild(label);
+      input.addEventListener('change', function () {
+        state[it.id] = input.checked;
+        persist();
+        update();
+      });
+    });
+
+    document.getElementById('pg-reset').addEventListener('click', function () {
+      state = {};
+      if (store) { try { store.removeItem(STORE_KEY); } catch (err) {} }
+      Array.prototype.forEach.call(grid.querySelectorAll('input'), function (i) { i.checked = false; });
+      update();
+    });
+
+    totalEl.textContent = String(items.length);
+    update();
+  })();
+
+  /* ── 排序可视化（冒泡排序） ── */
+  (function () {
+    var stage = document.getElementById('viz-stage');
+    if (!stage) { return; }
+    var runBtn = document.getElementById('viz-run');
+    var resetBtn = document.getElementById('viz-reset');
+    var compEl = document.getElementById('viz-comp');
+    var swapEl = document.getElementById('viz-swap');
+    var phaseEl = document.getElementById('viz-phase');
+    var COUNT = 16;
+    var values = [];
+    var bars = [];
+    var busy = false;
+    var timer = null;
+    var comparisons = 0;
+    var swaps = 0;
+
+    function build() {
+      stage.innerHTML = '';
+      bars = [];
+      values = [];
+      for (var i = 0; i < COUNT; i++) { values.push(Math.floor(Math.random() * 92) + 8); }
+      values.forEach(function (v) {
+        var b = document.createElement('div');
+        b.className = 'viz-bar';
+        b.style.height = v + '%';
+        stage.appendChild(b);
+        bars.push(b);
+      });
+    }
+    function clearHighlights() { bars.forEach(function (b) { b.classList.remove('is-active'); }); }
+    function setPhase(t) { phaseEl.textContent = t; }
+    function resetCounts() { comparisons = 0; swaps = 0; compEl.textContent = '0'; swapEl.textContent = '0'; }
+    function setHeight(i) { bars[i].style.height = values[i] + '%'; }
+
+    function run() {
+      if (busy) { return; }
+      busy = true;
+      runBtn.disabled = true;
+      resetCounts();
+      bars.forEach(function (b) { b.classList.remove('is-sorted'); });
+
+      var arr = values.slice();
+      var steps = [];
+      var n = arr.length;
+      var i, j;
+      for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - 1 - i; j++) {
+          steps.push({ t: 'compare', a: j, b: j + 1 });
+          if (arr[j] > arr[j + 1]) {
+            var tmp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = tmp;
+            steps.push({ t: 'swap', a: j, b: j + 1 });
+          }
+        }
+        steps.push({ t: 'mark', a: n - 1 - i });
+      }
+      steps.push({ t: 'done' });
+
+      setPhase('排序中');
+      var k = 0;
+      function step() {
+        if (k >= steps.length) {
+          busy = false;
+          runBtn.disabled = false;
+          clearHighlights();
+          bars.forEach(function (b) { b.classList.add('is-sorted'); });
+          setPhase('已完成');
+          return;
+        }
+        var s = steps[k]; k += 1;
+        clearHighlights();
+        if (s.t === 'compare') {
+          comparisons += 1;
+          compEl.textContent = String(comparisons);
+          bars[s.a].classList.add('is-active');
+          bars[s.b].classList.add('is-active');
+          timer = window.setTimeout(step, 85);
+        } else if (s.t === 'swap') {
+          swaps += 1;
+          swapEl.textContent = String(swaps);
+          var v = values[s.a]; values[s.a] = values[s.b]; values[s.b] = v;
+          setHeight(s.a); setHeight(s.b);
+          bars[s.a].classList.add('is-active');
+          bars[s.b].classList.add('is-active');
+          timer = window.setTimeout(step, 85);
+        } else if (s.t === 'mark') {
+          if (bars[s.a]) { bars[s.a].classList.add('is-sorted'); }
+          timer = window.setTimeout(step, 40);
+        } else {
+          timer = window.setTimeout(step, 300);
+        }
+      }
+      step();
+    }
+
+    runBtn.addEventListener('click', run);
+    resetBtn.addEventListener('click', function () {
+      if (timer) { window.clearTimeout(timer); }
+      busy = false;
+      runBtn.disabled = false;
+      build();
+      resetCounts();
+      clearHighlights();
+      setPhase('待开始');
+    });
+
+    build();
+    resetCounts();
+    setPhase('待开始');
+  })();
+
+  /* ── 返回顶部 ── */
+  (function () {
+    var btn = document.getElementById('to-top');
+    if (!btn) { return; }
+    function onScroll() { btn.classList.toggle('is-visible', window.scrollY > 640); }
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+})();
+</script>
+
+<button class="to-top" id="to-top" type="button" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+</body>
+</html>
