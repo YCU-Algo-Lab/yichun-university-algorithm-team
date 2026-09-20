@@ -184,6 +184,130 @@ switch ($action) {
         exit;
         break;
 
+    // 编辑问卷（管理员）
+    case 'update_survey':
+        if (!isset($_SESSION['admin_id'])) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'msg' => '未登录']);
+            break;
+        }
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = $data['id'] ?? 0;
+        $title = $data['title'] ?? '';
+        $description = $data['description'] ?? '';
+        $questions = $data['questions'] ?? [];
+
+        $db->beginTransaction();
+        $stmt = $db->prepare("UPDATE surveys SET title = ?, description = ? WHERE id = ?");
+        $stmt->execute([$title, $description, $id]);
+
+        // 删除旧问题
+        $stmt = $db->prepare("DELETE FROM questions WHERE survey_id = ?");
+        $stmt->execute([$id]);
+
+        // 插入新问题
+        $qStmt = $db->prepare("INSERT INTO questions (survey_id, type, title, options, sort_order) VALUES (?, ?, ?, ?, ?)");
+        foreach ($questions as $i => $q) {
+            $qStmt->execute([$id, $q['type'], $q['title'], $q['options'] ?? '', $i]);
+        }
+        $db->commit();
+        echo json_encode(['success' => true]);
+        break;
+
+    // 删除问卷（管理员）
+    case 'delete_survey':
+        if (!isset($_SESSION['admin_id'])) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'msg' => '未登录']);
+            break;
+        }
+        $id = $_GET['id'] ?? 0;
+        $db->beginTransaction();
+        // 删除答案
+        $stmt = $db->prepare("DELETE FROM answers WHERE response_id IN (SELECT id FROM responses WHERE survey_id = ?)");
+        $stmt->execute([$id]);
+        // 删除回复
+        $stmt = $db->prepare("DELETE FROM responses WHERE survey_id = ?");
+        $stmt->execute([$id]);
+        // 删除问题
+        $stmt = $db->prepare("DELETE FROM questions WHERE survey_id = ?");
+        $stmt->execute([$id]);
+        // 删除问卷
+        $stmt = $db->prepare("DELETE FROM surveys WHERE id = ?");
+        $stmt->execute([$id]);
+        $db->commit();
+        echo json_encode(['success' => true]);
+        break;
+
+    // 切换问卷状态（管理员）
+    case 'toggle_status':
+        if (!isset($_SESSION['admin_id'])) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'msg' => '未登录']);
+            break;
+        }
+        $id = $_GET['id'] ?? 0;
+        $stmt = $db->prepare("UPDATE surveys SET status = CASE WHEN status = 'open' THEN 'closed' ELSE 'open' END WHERE id = ?");
+        $stmt->execute([$id]);
+        echo json_encode(['success' => true]);
+        break;
+
+    // 获取统计数据（管理员）
+    case 'get_stats':
+        if (!isset($_SESSION['admin_id'])) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'msg' => '未登录']);
+            break;
+        }
+        $surveyId = $_GET['id'] ?? 0;
+
+        // 获取问题
+        $stmt = $db->prepare("SELECT * FROM questions WHERE survey_id = ? ORDER BY sort_order");
+        $stmt->execute([$surveyId]);
+        $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stats = [];
+        foreach ($questions as $q) {
+            $qid = $q['id'];
+            $qStat = [
+                'id' => $qid,
+                'title' => $q['title'],
+                'type' => $q['type'],
+                'total' => 0,
+                'options' => []
+            ];
+
+            if ($q['type'] === 'radio' || $q['type'] === 'checkbox') {
+                // 选择题：统计每个选项的数量
+                $opts = array_filter(array_map('trim', explode(',', $q['options'])));
+                foreach ($opts as $opt) {
+                    $qStat['options'][$opt] = 0;
+                }
+
+                $stmt = $db->prepare("SELECT answer FROM answers WHERE question_id = ?");
+                $stmt->execute([$qid]);
+                while ($a = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $qStat['total']++;
+                    $ansOpts = array_map('trim', explode(', ', $a['answer']));
+                    foreach ($ansOpts as $opt) {
+                        if (isset($qStat['options'][$opt])) {
+                            $qStat['options'][$opt]++;
+                        }
+                    }
+                }
+            } else {
+                // 文本题：统计总数
+                $stmt = $db->prepare("SELECT COUNT(*) as cnt FROM answers WHERE question_id = ? AND answer != ''");
+                $stmt->execute([$qid]);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $qStat['total'] = $row['cnt'];
+            }
+
+            $stats[] = $qStat;
+        }
+        echo json_encode($stats);
+        break;
+
     default:
         echo json_encode(['error' => 'Unknown action']);
 }
