@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
@@ -255,44 +255,48 @@
 </footer>
 
 <script>
-// 比赛数据
-var data = [
-  { name: "2026 ICPC 深圳邀请赛", type: ["ICPC","邀请赛"], place: "香港中文大学（深圳）", date: "2026-04-11", time: "11:00-16:00", state: "done", qq: "1041437005" },
-  { name: "2026 蓝桥杯 省赛", type: ["蓝桥杯","省赛"], place: "各省规定考点", date: "2026-04-11", time: "09:00-13:00", state: "done", qq: "" },
-  { name: "2026 天梯赛", type: ["天梯赛"], place: "PTA 线上", date: "2026-04-18", time: "13:30-16:30", state: "done", qq: "" },
-  { name: "2026 CCPC Final", type: ["CCPC"], place: "南阳理工学院", date: "2026-04-25", time: "09:00-14:00", state: "done", qq: "" },
-  { name: "2026 ICPC 新疆省赛", type: ["ICPC","省赛"], place: "新疆大学", date: "2026-04-25", time: "12:00-17:00", state: "done", qq: "1092196418" },
-  { name: "2026 ICPC 浙江省赛", type: ["ICPC","省赛"], place: "杭州师范大学", date: "2026-04-25", time: "12:00-17:00", state: "done", qq: "827778873" },
-  { name: "2026 ICPC 西安邀请赛", type: ["ICPC","邀请赛"], place: "西北工业大学", date: "2026-05-02", time: "10:00-15:00", state: "done", qq: "665674380" },
-  { name: "2026 CCPC 北京市赛", type: ["CCPC"], place: "华为北京研究所（北京化工大学承办）", date: "2026-05-10", time: "08:00-17:00", state: "done", qq: "523597345" },
-  { name: "2026 CCPC 河南省赛", type: ["CCPC","省赛"], place: "郑州轻工业大学", date: "2026-05-10", time: "10:00-15:00", state: "done", qq: "1158490493" },
-  { name: "2026 ICPC 江西省赛", type: ["ICPC","省赛"], place: "南昌大学", date: "2026-05-17", time: "09:00-14:00", state: "done", qq: "" },
-  { name: "2026 蓝桥杯 国赛", type: ["蓝桥杯","国赛"], place: "待定", date: "2026-06-01", time: "待定", state: "soon", qq: "" },
-  { name: "2026 ICPC 网络赛（第一场）", type: ["ICPC"], place: "线上", date: "2026-09-20", time: "12:00-17:00", state: "soon", qq: "" },
-  { name: "2026 ICPC 网络赛（第二场）", type: ["ICPC"], place: "线上", date: "2026-09-27", time: "12:00-17:00", state: "soon", qq: "" },
-  { name: "2026 CCPC 网络赛", type: ["CCPC"], place: "线上", date: "2026-10-04", time: "12:00-17:00", state: "soon", qq: "" },
-  { name: "2026 ICPC 区域赛（南京）", type: ["ICPC","区域赛"], place: "南京", date: "2026-11-01", time: "待定", state: "soon", qq: "" },
-  { name: "2026 ICPC 区域赛（济南）", type: ["ICPC","区域赛"], place: "济南", date: "2026-11-08", time: "待定", state: "soon", qq: "" },
-  { name: "2026 CCPC 邀请赛（秦皇岛）", type: ["CCPC","邀请赛"], place: "东北大学秦皇岛分校", date: "2026-11-15", time: "待定", state: "soon", qq: "" },
-  { name: "2026 校内模拟赛", type: ["校内"], place: "实训楼 W307", date: "2026-10-11", time: "14:30-19:30", state: "soon", qq: "" }
-];
-
 var filters = { year: "all", type: "all", place: "all", state: "all" };
 var tbody = document.getElementById("tbody");
 var countEl = document.getElementById("count");
 var emptyEl = document.getElementById("empty");
+var data = [];
 
-// 收集所有地点
-var places = {};
-data.forEach(function(d) { places[d.place] = true; });
-var placeFilter = document.querySelector('[data-filter="place"]');
-Object.keys(places).forEach(function(p) {
-  var btn = document.createElement("button");
-  btn.className = "chip";
-  btn.dataset.val = p;
-  btn.textContent = p;
-  placeFilter.appendChild(btn);
-});
+// 根据比赛日期自动判断状态：过了当天就是已结束
+function getState(d) {
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  var raceDate = new Date(d.date + "T23:59:59");
+  return raceDate < today ? "done" : "soon";
+}
+
+// 从 JSON 加载数据
+fetch("tournaments.json")
+  .then(function(r) { return r.json(); })
+  .then(function(json) {
+    data = json.map(function(d) {
+      d.state = getState(d);
+      return d;
+    });
+    initPlaceFilter();
+    render();
+  })
+  .catch(function(e) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--muted)">数据加载失败，请刷新重试</td></tr>';
+  });
+
+// 收集所有地点并生成筛选按钮
+function initPlaceFilter() {
+  var places = {};
+  data.forEach(function(d) { places[d.place] = true; });
+  var placeFilter = document.querySelector('[data-filter="place"]');
+  Object.keys(places).forEach(function(p) {
+    var btn = document.createElement("button");
+    btn.className = "chip";
+    btn.dataset.val = p;
+    btn.textContent = p;
+    placeFilter.appendChild(btn);
+  });
+}
 
 // 绑定筛选
 document.querySelectorAll(".chips").forEach(function(group) {
@@ -328,7 +332,8 @@ function render() {
   rows.forEach(function(d) {
     var tr = document.createElement("tr");
     var statusText = d.state === "done" ? "已结束" : "未结束";
-    var tags = '<span class="tag year">2026</span>';
+    var year = d.name.substring(0, 4);
+    var tags = '<span class="tag year">' + year + '</span>';
     d.type.forEach(function(t) { tags += '<span class="tag type">' + t + '</span>'; });
     tags += '<span class="tag place">' + d.place + '</span>';
     tags += '<span class="tag state ' + d.state + '">' + statusText + '</span>';
@@ -342,8 +347,6 @@ function render() {
     tbody.appendChild(tr);
   });
 }
-
-render();
 </script>
 
 </body>
