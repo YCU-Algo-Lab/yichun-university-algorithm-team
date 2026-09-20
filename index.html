@@ -918,25 +918,11 @@
 
         <div class="card" style="background: var(--surface);">
           <h3 style="margin-bottom: 8px;">报名方式</h3>
-          <p style="margin: 0; color: var(--muted); font-size: 15px;">在右侧登记你的报名意向，或留意学院与班级发布的招新通知；选拔赛开始前，我们会通过校内渠道公布时间与场次安排。</p>
+          <p style="margin: 0; color: var(--muted); font-size: 15px;">留意学院与班级发布的招新通知；选拔赛开始前，我们会通过校内渠道公布时间与场次安排。</p>
         </div>
       </div>
-
-      <div class="card">
-        <h3 style="margin-bottom: 6px;">报名意向登记</h3>
-        <p class="form-note" style="margin-bottom: var(--gap-md);">这是一个前端演示表单，填写内容不会提交到任何服务器。</p>
-        <form id="join-form" novalidate>
-          <div class="stack" style="gap: var(--gap-md);">
-            <div class="form-grid">
-              <div class="field">
-                <label for="jf-name">姓名</label>
-                <input class="input" id="jf-name" name="name" type="text" placeholder="请输入姓名" autocomplete="name" />
-              </div>
-              <div class="field">
-                <label for="jf-sid">学号</label>
-                <input class="input" id="jf-sid" name="sid" type="text" placeholder="请输入学号" inputmode="numeric" />
-              </div>
-            </div>
+      </div>
+    </div>
             <div class="form-grid">
               <div class="field">
                 <label for="jf-grade">年级</label>
@@ -1010,10 +996,6 @@
           <summary>加入后有什么要求？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
           <div class="faq-body"><p>按时参加训练、完成阶段题单、参加模拟赛并认真复盘。保持稳定的节奏，比偶尔的高强度突击更有效。</p></div>
         </details>
-        <details>
-          <summary>怎么报名？<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
-          <div class="faq-body"><p>留意学院与班级发布的招新通知，同时可以在本页「加入我们」登记报名意向。选拔赛开始前会公布具体时间与场次。</p></div>
-        </details>
       </div>
     </div>
   </section>
@@ -1070,17 +1052,7 @@
       activate(t.getAttribute('data-topic'));
     });
   });
-
-  /* 报名意向登记 · 本地演示提交 */
-  var form = document.getElementById('join-form');
-  var ok = document.getElementById('join-ok');
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (ok) { ok.hidden = false; }
-      form.reset();
-      if (ok) { ok.scrollIntoView({ block: 'nearest' }); }
-    });
+);
   }
 
   /* 导航当前分区高亮 */
