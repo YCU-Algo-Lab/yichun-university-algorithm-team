@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>锦标赛日历 · 宜春学院算法队</title>
+<meta name="description" content="程序设计竞赛锦标赛信息汇总与筛选" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/space-grotesk@5.2.10/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/manrope@5.2.8/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-sans-sc@5.2.10/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@5.2.8/index.css" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #0d1014;
+    --surface: #151a20;
+    --fg:      #e8ecf1;
+    --muted:   #93a0ae;
+    --border:  #242c37;
+    --accent:  #34d17f;
+    --c-mid:   #57a8ef;
+    --c-hard:  #e0a13a;
+    --c-expert:#dd6d89;
+    --radius:  10px;
+    --radius-lg: 16px;
+    --font-display: 'Space Grotesk Variable', 'Noto Sans SC Variable', 'PingFang SC', system-ui, sans-serif;
+    --font-body:    'Manrope Variable', 'Noto Sans SC Variable', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: linear-gradient(rgba(13,16,20,0.82), rgba(13,16,20,0.92)), url("assets/yc-bg.png") center bottom / cover no-repeat fixed;
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(13,16,20,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav-inner {
+    max-width: 1280px; margin-inline: auto;
+    padding: 14px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .brand img { width: 32px; height: 32px; border-radius: 50%; }
+  .brand small { display: block; font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0.08em; }
+  .nav-back {
+    font-family: var(--font-mono); font-size: 13px;
+    color: var(--accent); padding: 6px 14px;
+    border: 1px solid var(--accent); border-radius: 999px;
+    transition: all .2s;
+  }
+  .nav-back:hover { background: var(--accent); color: var(--bg); }
+
+  .container { max-width: 1280px; margin-inline: auto; padding-inline: 28px; }
+
+  .page-head { padding: 48px 0 24px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  h1 { font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); margin: 0; letter-spacing: -0.01em; }
+  .lead { color: var(--muted); max-width: 60ch; margin: 12px 0 0; }
+
+  /* 筛选栏 */
+  .filters {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .filter-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 12px 20px; padding: 10px 0;
+  }
+  .filter-row + .filter-row { border-top: 1px solid var(--border); }
+  .filter-label {
+    font-size: 13px; color: var(--muted);
+    min-width: 60px; font-weight: 600;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 13px; padding: 5px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    transition: all .15s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--fg); }
+  .chip.active {
+    background: var(--accent); color: var(--bg);
+    border-color: var(--accent); font-weight: 600;
+  }
+  .chip.orange { border-color: rgba(224,161,58,.4); color: var(--c-hard); }
+  .chip.orange.active { background: var(--c-hard); color: #0d1014; border-color: var(--c-hard); }
+  .chip.pink { border-color: rgba(221,109,137,.4); color: var(--c-expert); }
+  .chip.pink.active { background: var(--c-expert); color: #0d1014; border-color: var(--c-expert); }
+  .chip.blue { border-color: rgba(87,168,239,.4); color: var(--c-mid); }
+  .chip.blue.active { background: var(--c-mid); color: #0d1014; border-color: var(--c-mid); }
+
+  .result-count { font-size: 13px; color: var(--muted); margin: 12px 0; }
+  .result-count b { color: var(--accent); }
+
+  /* 表格 */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: #0d131a; }
+  th {
+    text-align: left; padding: 14px 20px;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:hover { background: rgba(255,255,255,.02); }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .t-name { font-weight: 600; font-size: 15px; }
+  .t-status { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .t-status.done { color: var(--muted); }
+  .t-status.soon { color: var(--c-hard); }
+  .tag {
+    display: inline-block; font-size: 12px;
+    padding: 2px 10px; border-radius: 999px;
+    margin: 2px 4px 2px 0;
+  }
+  .tag.year { background: rgba(52,209,127,.12); color: var(--accent); }
+  .tag.type { background: rgba(87,168,239,.12); color: var(--c-mid); }
+  .tag.place { background: rgba(224,161,58,.12); color: var(--c-hard); }
+  .tag.state { background: rgba(255,255,255,.06); color: var(--muted); }
+  .tag.state.done { background: rgba(255,255,255,.06); color: var(--muted); }
+  .tag.state.soon { background: rgba(221,109,137,.12); color: var(--c-expert); }
+
+  .t-date { font-size: 14px; white-space: nowrap; }
+  .t-date small { display: block; font-size: 12px; color: var(--muted); }
+  .t-place { font-size: 14px; }
+  .t-link { font-family: var(--font-mono); font-size: 13px; color: var(--c-mid); }
+  .t-link:hover { text-decoration: underline; }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+
+  footer {
+    margin-top: 60px; padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center; color: var(--muted); font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    .table-wrap { overflow-x: auto; }
+    table { min-width: 700px; }
+    .filter-label { min-width: auto; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/ycu-logo.png" alt="YCU">
+      <span>
+        宜春学院算法队
+        <small>YOU · ALGO TEAM</small>
+      </span>
+    </a>
+    <a class="nav-back" href="index.html">← 返回首页</a>
+  </div>
+</nav>
+
+<main class="container">
+  <div class="page-head">
+    <p class="eyebrow">Tournaments</p>
+    <h1>锦标赛日历</h1>
+    <p class="lead">汇总全年程序设计竞赛信息，按类型、地点、状态筛选，方便队员规划备赛节奏。</p>
+  </div>
+
+  <!-- 筛选栏 -->
+  <div class="filters">
+    <div class="filter-row">
+      <span class="filter-label">年份</span>
+      <div class="chips" data-filter="year">
+        <button class="chip active" data-val="all">全部</button>
+        <button class="chip" data-val="2026">2026</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">比赛类型</span>
+      <div class="chips" data-filter="type">
+        <button class="chip active" data-val="all">全部</button>
+        <button class="chip" data-val="国赛">国赛</button>
+        <button class="chip blue" data-val="蓝桥杯">蓝桥杯</button>
+        <button class="chip" data-val="省赛">省赛</button>
+        <button class="chip" data-val="天梯赛">天梯赛</button>
+        <button class="chip" data-val="邀请赛">邀请赛</button>
+        <button class="chip blue" data-val="CCPC">CCPC</button>
+        <button class="chip blue" data-val="ICPC">ICPC</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">地点</span>
+      <div class="chips" data-filter="place">
+        <button class="chip active" data-val="all">全部</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">状态</span>
+      <div class="chips" data-filter="state">
+        <button class="chip active" data-val="all">全部</button>
+        <button class="chip pink" data-val="soon">未结束</button>
+        <button class="chip orange" data-val="done">已结束</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="result-count">共 <b id="count">0</b> 场锦标赛</p>
+
+  <!-- 表格 -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>比赛名称</th>
+          <th>标签</th>
+          <th>比赛时期</th>
+          <th>地点</th>
+          <th>QQ群或链接</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>没有匹配的比赛，试试放宽筛选条件。</div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">宜春学院算法队 · 锦标赛信息持续更新中</div>
+</footer>
+
+<script>
+// 比赛数据
+var data = [
+  { name: "2026 ICPC 深圳邀请赛", type: ["ICPC","邀请赛"], place: "香港中文大学（深圳）", date: "2026-04-11", time: "11:00-16:00", state: "done", qq: "1041437005" },
+  { name: "2026 蓝桥杯 省赛", type: ["蓝桥杯","省赛"], place: "各省规定考点", date: "2026-04-11", time: "09:00-13:00", state: "done", qq: "" },
+  { name: "2026 天梯赛", type: ["天梯赛"], place: "PTA 线上", date: "2026-04-18", time: "13:30-16:30", state: "done", qq: "" },
+  { name: "2026 CCPC Final", type: ["CCPC"], place: "南阳理工学院", date: "2026-04-25", time: "09:00-14:00", state: "done", qq: "" },
+  { name: "2026 ICPC 新疆省赛", type: ["ICPC","省赛"], place: "新疆大学", date: "2026-04-25", time: "12:00-17:00", state: "done", qq: "1092196418" },
+  { name: "2026 ICPC 浙江省赛", type: ["ICPC","省赛"], place: "杭州师范大学", date: "2026-04-25", time: "12:00-17:00", state: "done", qq: "827778873" },
+  { name: "2026 ICPC 西安邀请赛", type: ["ICPC","邀请赛"], place: "西北工业大学", date: "2026-05-02", time: "10:00-15:00", state: "done", qq: "665674380" },
+  { name: "2026 CCPC 北京市赛", type: ["CCPC"], place: "华为北京研究所（北京化工大学承办）", date: "2026-05-10", time: "08:00-17:00", state: "done", qq: "523597345" },
+  { name: "2026 CCPC 河南省赛", type: ["CCPC","省赛"], place: "郑州轻工业大学", date: "2026-05-10", time: "10:00-15:00", state: "done", qq: "1158490493" },
+  { name: "2026 ICPC 江西省赛", type: ["ICPC","省赛"], place: "南昌大学", date: "2026-05-17", time: "09:00-14:00", state: "done", qq: "" },
+  { name: "2026 蓝桥杯 国赛", type: ["蓝桥杯","国赛"], place: "待定", date: "2026-06-01", time: "待定", state: "soon", qq: "" },
+  { name: "2026 ICPC 网络赛（第一场）", type: ["ICPC"], place: "线上", date: "2026-09-20", time: "12:00-17:00", state: "soon", qq: "" },
+  { name: "2026 ICPC 网络赛（第二场）", type: ["ICPC"], place: "线上", date: "2026-09-27", time: "12:00-17:00", state: "soon", qq: "" },
+  { name: "2026 CCPC 网络赛", type: ["CCPC"], place: "线上", date: "2026-10-04", time: "12:00-17:00", state: "soon", qq: "" },
+  { name: "2026 ICPC 区域赛（南京）", type: ["ICPC","区域赛"], place: "南京", date: "2026-11-01", time: "待定", state: "soon", qq: "" },
+  { name: "2026 ICPC 区域赛（济南）", type: ["ICPC","区域赛"], place: "济南", date: "2026-11-08", time: "待定", state: "soon", qq: "" },
+  { name: "2026 CCPC 邀请赛（秦皇岛）", type: ["CCPC","邀请赛"], place: "东北大学秦皇岛分校", date: "2026-11-15", time: "待定", state: "soon", qq: "" },
+  { name: "2026 校内模拟赛", type: ["校内"], place: "实训楼 W307", date: "2026-10-11", time: "14:30-19:30", state: "soon", qq: "" }
+];
+
+var filters = { year: "all", type: "all", place: "all", state: "all" };
+var tbody = document.getElementById("tbody");
+var countEl = document.getElementById("count");
+var emptyEl = document.getElementById("empty");
+
+// 收集所有地点
+var places = {};
+data.forEach(function(d) { places[d.place] = true; });
+var placeFilter = document.querySelector('[data-filter="place"]');
+Object.keys(places).forEach(function(p) {
+  var btn = document.createElement("button");
+  btn.className = "chip";
+  btn.dataset.val = p;
+  btn.textContent = p;
+  placeFilter.appendChild(btn);
+});
+
+// 绑定筛选
+document.querySelectorAll(".chips").forEach(function(group) {
+  var key = group.dataset.filter;
+  group.addEventListener("click", function(e) {
+    var btn = e.target.closest(".chip");
+    if (!btn) return;
+    group.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
+    btn.classList.add("active");
+    filters[key] = btn.dataset.val;
+    render();
+  });
+});
+
+function render() {
+  var rows = data.filter(function(d) {
+    if (filters.year !== "all" && !d.name.includes(filters.year)) return false;
+    if (filters.type !== "all" && d.type.indexOf(filters.type) === -1) return false;
+    if (filters.place !== "all" && d.place !== filters.place) return false;
+    if (filters.state !== "all" && d.state !== filters.state) return false;
+    return true;
+  });
+
+  countEl.textContent = rows.length;
+  tbody.innerHTML = "";
+
+  if (rows.length === 0) {
+    emptyEl.hidden = false;
+    return;
+  }
+  emptyEl.hidden = true;
+
+  rows.forEach(function(d) {
+    var tr = document.createElement("tr");
+    var statusText = d.state === "done" ? "已结束" : "未结束";
+    var tags = '<span class="tag year">2026</span>';
+    d.type.forEach(function(t) { tags += '<span class="tag type">' + t + '</span>'; });
+    tags += '<span class="tag place">' + d.place + '</span>';
+    tags += '<span class="tag state ' + d.state + '">' + statusText + '</span>';
+
+    tr.innerHTML =
+      '<td><div class="t-name">' + d.name + '</div><div class="t-status ' + d.state + '">' + statusText + '</div></td>' +
+      '<td>' + tags + '</td>' +
+      '<td class="t-date">' + d.date + '<small>' + d.time + '</small></td>' +
+      '<td class="t-place">' + d.place + '</td>' +
+      '<td>' + (d.qq ? '<a class="t-link" href="javascript:void(0)">' + d.qq + '</a>' : '-') + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
