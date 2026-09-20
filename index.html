@@ -802,8 +802,8 @@
       <div class="countdown">
         <div>
           <p class="cd-label">下一场例行模拟赛</p>
-          <p class="cd-title">周六模拟赛 · 19:00 上机</p>
-          <p class="cd-sub">按正式赛制限时进行，赛后统一讲题与复盘。</p>
+          <p class="cd-title">10月11日模拟赛 · 14:30–19:30</p>
+          <p class="cd-sub">地点：实训楼 W307 · 按正式赛制限时进行，赛后统一讲题与复盘。</p>
         </div>
         <div class="cd-timer" id="cd-timer" aria-label="下一场模拟赛倒计时">
           <div class="cd-unit"><b data-cd="d">00</b><span>Days</span></div>
@@ -1110,12 +1110,8 @@
     var mEl = root.querySelector('[data-cd="m"]');
     var sEl = root.querySelector('[data-cd="s"]');
     function nextSession() {
-      var now = new Date();
-      var t = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0, 0, 0);
-      var delta = (6 - t.getDay() + 7) % 7;
-      t.setDate(t.getDate() + delta);
-      if (t.getTime() <= now.getTime()) { t.setDate(t.getDate() + 7); }
-      return t;
+      // 下一场模拟赛：2026年10月11日 14:30
+      return new Date(2026, 9, 11, 14, 30, 0, 0);
     }
     function pad(n) { return (n < 10 ? '0' : '') + n; }
     var target = nextSession();
