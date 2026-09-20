@@ -354,18 +354,6 @@
   .check-item:has(input:focus-visible) { outline: 2px solid var(--accent-soft); }
   .check-item .ck-topic { margin-left: auto; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
 
-  /* ─── 算法可视化 ─────────────────────────────────────────────────── */
-  .viz-stage {
-    display: flex; align-items: flex-end; gap: 6px; height: 220px; padding: 18px;
-    border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);
-  }
-  .viz-bar { flex: 1; background: var(--border); border-radius: 5px 5px 0 0; min-height: 5px; transition: height .18s ease, background .18s ease; }
-  .viz-bar.is-active { background: var(--accent); }
-  .viz-bar.is-sorted { background: color-mix(in oklch, var(--accent) 55%, var(--surface)); }
-  .viz-controls { display: flex; flex-wrap: wrap; gap: var(--gap-sm); align-items: center; margin-top: var(--gap-md); }
-  .viz-status { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-left: auto; }
-  .viz-status b { color: var(--accent); font-weight: 600; }
-
   /* ─── FAQ ────────────────────────────────────────────────────────── */
   .faq { border-top: 1px solid var(--border); }
   .faq details { border-bottom: 1px solid var(--border); }
@@ -417,7 +405,6 @@
       <a href="https://blog.ycualgo.tech" target="_blank" rel="noopener">博客 ↗</a>
       <a href="http://oj.ycualgo.tech" target="_blank" rel="noopener">OJ 平台 ↗</a>
     </nav>
-    <a class="btn btn-primary" href="#join">报名选拔</a>
   </div>
 </header>
 
@@ -431,8 +418,7 @@
         <h1>把每一道题，都当作一次上机实战。</h1>
         <p class="lead">算法队面向宜春学院全体在校学生，围绕数据结构、算法设计与编程竞赛开展系统训练，用固定的训练节奏和真实的赛题环境，把基础扎实、愿意投入的同学带到赛场上去。</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#join">报名选拔</a>
-          <a class="btn btn-secondary btn-arrow" href="#training">了解训练体系</a>
+                <a class="btn btn-secondary btn-arrow" href="#training">了解训练体系</a>
         </div>
 
         <div class="verdict-bar" aria-label="训练环境状态示意">
@@ -748,25 +734,6 @@
     </div>
   </section>
 
-  <!-- 算法可视化 -->
-  <section class="section" id="visualizer" data-section="visualizer">
-    <div class="container stack" style="gap: 40px;">
-      <div style="max-width: 48ch;">
-        <p class="eyebrow">算法可视化</p>
-        <h2>看得见过程，才想得清算法。</h2>
-        <p class="lead" style="margin-top: 14px;">以冒泡排序为例：每一轮比较相邻两个元素，较大的值像气泡一样浮向末尾。点击按钮，用慢速动画观察整个排序过程。</p>
-      </div>
-      <div>
-        <div class="viz-stage" id="viz-stage" aria-label="冒泡排序可视化舞台"></div>
-        <div class="viz-controls">
-          <button class="btn btn-primary" type="button" id="viz-run">开始排序</button>
-          <button class="btn btn-secondary" type="button" id="viz-reset">重新打乱</button>
-          <span class="viz-status" aria-live="polite">比较 <b id="viz-comp">0</b> 次 · 交换 <b id="viz-swap">0</b> 次 · <span id="viz-phase">待开始</span></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 题单 -->
   <section class="section" id="problems" data-section="problems">
     <div class="container stack" style="gap: 24px;">
@@ -1057,8 +1024,7 @@
     <div class="container" style="max-width: 620px;">
       <h2>下一道 Accepted，等你来写。</h2>
       <p class="lead">加入宜春学院算法队，从第一次上机开始，把想法变成能跑起来的代码。</p>
-      <a class="btn btn-primary" href="#join">报名选拔</a>
-    </div>
+      </div>
   </section>
 
 </main>
@@ -1342,117 +1308,6 @@
 
     totalEl.textContent = String(items.length);
     update();
-  })();
-
-  /* ── 排序可视化（冒泡排序） ── */
-  (function () {
-    var stage = document.getElementById('viz-stage');
-    if (!stage) { return; }
-    var runBtn = document.getElementById('viz-run');
-    var resetBtn = document.getElementById('viz-reset');
-    var compEl = document.getElementById('viz-comp');
-    var swapEl = document.getElementById('viz-swap');
-    var phaseEl = document.getElementById('viz-phase');
-    var COUNT = 16;
-    var values = [];
-    var bars = [];
-    var busy = false;
-    var timer = null;
-    var comparisons = 0;
-    var swaps = 0;
-
-    function build() {
-      stage.innerHTML = '';
-      bars = [];
-      values = [];
-      for (var i = 0; i < COUNT; i++) { values.push(Math.floor(Math.random() * 92) + 8); }
-      values.forEach(function (v) {
-        var b = document.createElement('div');
-        b.className = 'viz-bar';
-        b.style.height = v + '%';
-        stage.appendChild(b);
-        bars.push(b);
-      });
-    }
-    function clearHighlights() { bars.forEach(function (b) { b.classList.remove('is-active'); }); }
-    function setPhase(t) { phaseEl.textContent = t; }
-    function resetCounts() { comparisons = 0; swaps = 0; compEl.textContent = '0'; swapEl.textContent = '0'; }
-    function setHeight(i) { bars[i].style.height = values[i] + '%'; }
-
-    function run() {
-      if (busy) { return; }
-      busy = true;
-      runBtn.disabled = true;
-      resetCounts();
-      bars.forEach(function (b) { b.classList.remove('is-sorted'); });
-
-      var arr = values.slice();
-      var steps = [];
-      var n = arr.length;
-      var i, j;
-      for (i = 0; i < n - 1; i++) {
-        for (j = 0; j < n - 1 - i; j++) {
-          steps.push({ t: 'compare', a: j, b: j + 1 });
-          if (arr[j] > arr[j + 1]) {
-            var tmp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = tmp;
-            steps.push({ t: 'swap', a: j, b: j + 1 });
-          }
-        }
-        steps.push({ t: 'mark', a: n - 1 - i });
-      }
-      steps.push({ t: 'done' });
-
-      setPhase('排序中');
-      var k = 0;
-      function step() {
-        if (k >= steps.length) {
-          busy = false;
-          runBtn.disabled = false;
-          clearHighlights();
-          bars.forEach(function (b) { b.classList.add('is-sorted'); });
-          setPhase('已完成');
-          return;
-        }
-        var s = steps[k]; k += 1;
-        clearHighlights();
-        if (s.t === 'compare') {
-          comparisons += 1;
-          compEl.textContent = String(comparisons);
-          bars[s.a].classList.add('is-active');
-          bars[s.b].classList.add('is-active');
-          timer = window.setTimeout(step, 85);
-        } else if (s.t === 'swap') {
-          swaps += 1;
-          swapEl.textContent = String(swaps);
-          var v = values[s.a]; values[s.a] = values[s.b]; values[s.b] = v;
-          setHeight(s.a); setHeight(s.b);
-          bars[s.a].classList.add('is-active');
-          bars[s.b].classList.add('is-active');
-          timer = window.setTimeout(step, 85);
-        } else if (s.t === 'mark') {
-          if (bars[s.a]) { bars[s.a].classList.add('is-sorted'); }
-          timer = window.setTimeout(step, 40);
-        } else {
-          timer = window.setTimeout(step, 300);
-        }
-      }
-      step();
-    }
-
-    runBtn.addEventListener('click', run);
-    resetBtn.addEventListener('click', function () {
-      if (timer) { window.clearTimeout(timer); }
-      busy = false;
-      runBtn.disabled = false;
-      build();
-      resetCounts();
-      clearHighlights();
-      setPhase('待开始');
-    });
-
-    build();
-    resetCounts();
-    setPhase('待开始');
   })();
 
   /* ── 返回顶部 ── */
